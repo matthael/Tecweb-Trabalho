@@ -1,59 +1,72 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Container principal da lista */
+.list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+.list-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
 }
 
-.navbar {
-  background-color: #222;
-  color: white;
-  padding: 16px 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
-.navbar div {
-  display: flex;
-  gap: 16px;
-}
-
-.navbar a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.navbar a:hover {
-  text-decoration: underline;
-}
-
-.container {
-  max-width: 1000px;
-  margin: 40px auto;
-  background-color: white;
-  padding: 32px;
+/* Estilo do Card */
+.event-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+}
+
+.event-date {
+  font-size: 0.85rem;
+  color: #007bff;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.event-title {
+  font-size: 1.2rem;
+  color: #222;
+  margin: 0 0 10px 0;
+}
+
+.event-description {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* ========================================= */
+/* AJUSTES DE RESPONSIVIDADE (Media Queries) */
+/* ========================================= */
+
+@media (max-width: 900px) {
+  .events-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 600px) {
-  .navbar {
-    flex-direction: column;
-    gap: 12px;
+  .events-grid {
+    grid-template-columns: 1fr
   }
-
-  .navbar div {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .container {
-    margin: 20px;
-    padding: 20px;
+  
+  .list-container {
+    padding: 10px;
   }
 }
