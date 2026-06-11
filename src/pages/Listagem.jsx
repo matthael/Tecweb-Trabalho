@@ -1,48 +1,57 @@
-// src/services/api.js
+// src/pages/Listagem.jsx
+import React, { useEffect, useState, useContext } from 'react';
+import { getUsuarios } from '../services/api'; // Puxa as funções do arquivo api.js
+import EventCard from '../components/EventCard';
+import { UserContext } from '../context/UserContext'; // Contexto global do grupo
+import '../styles.css';
 
-// URL do json-server que criamos (mude se o seu grupo usar outra porta)
-const BASE_URL = "http://localhost:3000"; 
+const Listagem = () => {
+  // Puxa a lista do formulário local via contexto global
+  const { usuarios } = useContext(UserContext); 
 
-/**
- * BUSCAR USUÁRIOS (GET)
- * Puxa a lista de usuários salvos no db.json
- */
-export const getUsuarios = async () => {
-  try {
-    const response = await fetch(`${BASE_URL}/usuarios`);
-    if (!response.ok) {
-      throw new Error("Erro ao buscar usuários do servidor.");
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Erro na API (GET):", error);
-    return []; // Retorna uma lista vazia caso o servidor esteja desligado
-  }
+  // Estados para os dados vindos do json-server
+  const [apiUsers, setApiUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Busca os dados da API assim que a tela abre
+  useEffect(() => {
+    const fetchAPI = async () => {
+      const data = await getUsuarios();
+      setApiUsers(data);
+      setLoading(false);
+    };
+
+    fetchAPI();
+  }, []);
+
+const listaLocal = Array.isArray(usuarios) ? usuarios : [];
+const listaApi = Array.isArray(apiUsers) ? apiUsers : [];
+
+const todosUsuarios = [...listaLocal, ...listaApi];
+
+  return (
+    <div className="list-container">
+      <h2>Listagem de Usuários Cadastrados</h2>
+      
+      {loading ? (
+        <p className="loading-text">Carregando dados da API...</p>
+      ) : todosUsuarios.length === 0 ? (
+        <p className="loading-text">Nenhum usuário cadastrado até o momento.</p>
+      ) : (
+        <div className="events-grid">
+          {/* Mapeia a lista inteira combinada nos cartões visuais */}
+          {todosUsuarios.map((usuario, index) => (
+            <EventCard 
+              key={usuario.id || `local-${index}`} 
+              title={usuario.nome} 
+              body={`E-mail: ${usuario.email} | Cidade: ${usuario.cidade}`} 
+              date={`📞 ${usuario.telefone}`} 
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
 
-/**
- * SALVAR USUÁRIO (POST)
- * Envia os dados do formulário para serem gravados permanentemente no db.json
- */
-export const salvarUsuario = async (novoUsuario) => {
-  try {
-    const response = await fetch(`${BASE_URL}/usuarios`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(novoUsuario),
-    });
-
-    if (!response.ok) {
-      throw new Error("Erro ao salvar o usuário no servidor.");
-    }
-
-    const data = await response.json();
-    return data; // Retorna o usuário com o ID gerado pelo json-server
-  } catch (error) {
-    console.error("Erro na API (POST):", error);
-    return null;
-  }
-};
+export default Listagem;

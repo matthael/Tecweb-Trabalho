@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Cadastro from "./pages/Cadastro";
-import Listagem from "./pages/Listagem";
+import Listagem from './pages/Listagem';
 import { UserProvider } from "./context/UserContext"; // <-- Importe aqui
 import "./styles.css";
 
