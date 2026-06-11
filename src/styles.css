@@ -216,7 +216,9 @@ p {
 /* 5. PÁGINA DE LISTAGEM E CARDS             */
 /* ========================================= */
 .list-container {
-  composes: container;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
 .list-container h2 {
