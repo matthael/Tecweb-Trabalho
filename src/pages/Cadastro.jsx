@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { salvarUsuario } from "../services/api";
 
 function Cadastro() {
   // Puxa a função de adicionar do contexto global
@@ -27,7 +28,7 @@ function Cadastro() {
   };
 
   // Processa o envio do formulário
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErro("");
     setSucesso(false);
@@ -45,12 +46,25 @@ function Cadastro() {
       return;
     }
 
-    // Se passou nas validações: salva no contexto global
-    adicionarUsuario(formData);
-    setSucesso(true);
+// --- SALVANDO NA API (db.json) E NO CONTEXTO ---
+    try {
+      // 3. PASSO: Envia os dados para o json-server gravar no db.json
+      const respostaApi = await salvarUsuario(formData);
 
-    // Limpa o formulário após o cadastro bem-sucedido
-    setFormData({ nome: "", email: "", telefone: "", cidade: "" });
+      if (respostaApi) {
+        // Se a API salvou com sucesso, adicionamos o retorno (já com o ID gerado) no Contexto Global
+        adicionarUsuario(respostaApi);
+        setSucesso(true);
+
+        // Limpa o formulário após o cadastro bem-sucedido
+        setFormData({ nome: "", email: "", telefone: "", cidade: "" });
+      } else {
+        setErro("Não foi possível salvar no servidor. O json-server está ligado?");
+      }
+    } catch (err) {
+      setErro("Erro de conexão com o banco de dados.");
+      console.error(err);
+    }
   };
 
   return (

@@ -1,11 +1,19 @@
 {
   "usuarios": [
     {
-      "id": "1",
-      "nome": "João Silva",
-      "email": "joao@email.com",
-      "telefone": "99999-9999",
-      "cidade": "São Paulo"
+      "nome": "Bruno Nóbrega Souza",
+      "email": "b@gmail.com",
+      "telefone": "61994036398",
+      "cidade": "Brasilia",
+      "id": "pH3xLmAYaoQ"
+    },
+    {
+      "nome": "Eduardo",
+      "email": "edu@gmail.com",
+      "telefone": "61994875698",
+      "cidade": "Sobradinho",
+      "id": "XiMMa8CTUCo"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
